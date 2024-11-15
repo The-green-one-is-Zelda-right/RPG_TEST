@@ -33,4 +33,15 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* SpringArmComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera Zoom", meta = (AllowPrivateAccess = "true"))
+	float MinZoom;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera Zoom", meta = (AllowPrivateAccess = "true"))
+	float MaxZoom;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera Zoom", meta = (AllowPrivateAccess = "true"))
+	float ZoomSpeed;
+
+	void ZoomCamera(float AxisValue);
 };

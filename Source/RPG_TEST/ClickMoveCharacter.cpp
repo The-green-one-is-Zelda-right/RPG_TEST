@@ -35,16 +35,19 @@ AClickMoveCharacter::AClickMoveCharacter()
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	CameraComponent->SetupAttachment(SpringArmComponent, USpringArmComponent::SocketName);
 	CameraComponent->bUsePawnControlRotation = false;	// 캐릭터가 회전할 떄 카메라 회전 잠금
-
+	UE_LOG(LogTemp, Warning, TEXT("Hi"));
+	MinZoom = 300.0f;
+	MaxZoom = 1200.0f;
+	ZoomSpeed = 50.0f;
 }
 
 // Called when the game starts or when spawned
 void AClickMoveCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	
+
 }
+
 
 // Called every frame
 void AClickMoveCharacter::Tick(float DeltaTime)
@@ -57,6 +60,23 @@ void AClickMoveCharacter::Tick(float DeltaTime)
 void AClickMoveCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	PlayerInputComponent->BindAxis("Zoom", this, &AClickMoveCharacter::ZoomCamera);
+	
+}
 
+void AClickMoveCharacter::ZoomCamera(float AxisValue)
+{
+
+	if (AxisValue != 0.0f)
+	{
+		// 카메라의 TargetArmLength 조정
+		float NewTargetArmLenghth = FMath::Clamp(
+			SpringArmComponent->TargetArmLength - AxisValue * ZoomSpeed,
+			MinZoom,
+			MaxZoom
+		);
+		SpringArmComponent->TargetArmLength = NewTargetArmLenghth;
+
+	}
 }
 
